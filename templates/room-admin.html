@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Room </title>
+    <link rel="stylesheet" href="style/room.css">
+</head>
+<body>
+    
+    <img src="images/bg.png" alt="" class="bg">
+
+    
+    <div class="container">
+
+
+        <div class="left">
+
+            <video src="" id="live"></video>
+            <div class="btns">
+                <button id="start-live">تشغيل البث</button>
+                <button id="end-live">انهاء البث</button>
+                <button id="copy-live-url" data-url="url_here">نسخ رابط البث</button>
+            </div>
+            
+        </div>
+
+
+        <div class="right">
+
+            <div class="live-timeline">
+
+                <div class="msg-box">
+
+                    <!-- loop messages here -->
+                    <div class="box">
+                        <div class="msg" id="1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, debitis.</div>
+                    </div>
+
+                </div>
+
+                <div class="details">
+                    <p>عدد الرسائل : </p>
+                    <p id="msg-counter">1</p>
+                </div>
+
+            </div>
+            
+        </div>
+        
+
+    </div>
+
+
+    <script>
+        // code for copy url of live to clipboard
+        var copy_btn = document.getElementById('copy-live-url'); 
+        copy_btn.addEventListener('click',()=>{
+            navigator.clipboard.writeText(copy_btn.dataset.url)
+            alert('تم النسخ بنجاح')
+        })
+    </script>
+
+</body>
+</html>
