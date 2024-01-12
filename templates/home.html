@@ -26,7 +26,7 @@
 
             <div class="btns">
                 {% if c_user %}
-                    <a href="#" class="green">ابدأ بث مباشر </a>
+                    <a href="{% url 'create_room' %}" class="green">ابدأ بث مباشر </a>
                     <a href="{% url 'logout' %}" class="red">تسجيل الخروج</a>
                 {% else %}
                     <a href="{% url 'register' %}" class="cyan">انشاء حساب</a>

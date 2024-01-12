@@ -20,7 +20,7 @@
             <video src="" id="live"></video>
             <div class="btns">
                 <button id="start-live">تشغيل البث</button>
-                <button id="end-live">انهاء البث</button>
+                <a href="{% url 'delete_room' room.room_id %}" id="end-live">انهاء البث</a>
                 <button id="copy-live-url" data-url="{{room_url}}">نسخ رابط البث</button>
             </div>
             

@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انشاء بث</title>
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}">
+</head>
+<body>
+    
+    <img src="{% static 'images/bg.png' %}" alt="" class="bg">
+
+    
+    <div class="container">
+
+        <form action="" method="POST" >
+
+            {% csrf_token %}
+
+            <input type="text" name="title" autocomplete="off" placeholder="اسم البث المباشر">
+
+
+            <div class="btns">
+                <a href="{% url 'rooms' %}">الرئيسية</a>
+                <button type="submit">انشاء بث</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <script>
+        if ("{{error}}"){
+            alert("{{error}}")
+        }
+    </script>
+
+
+</body>
+</html>
