@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية</title>
-    <link rel="stylesheet" href="style/home.css">
+    <link rel="stylesheet" href="{% static 'style/home.css' %}">
 </head>
 <body>
 
-    <img src="images/bg.png" alt="" class="bg">
+    <img src="{% static 'images/bg.png' %}" alt="" class="bg">
     
 
     <div class="container">
@@ -16,16 +17,21 @@
         <div class="up">
 
             <!-- if user not auth add none to user class -->
-            <div class="user">
-                <img src="images/radwan.jpeg" alt="">
-                <p>Radwan Gaber</p>
+            
+            
+            <div class="user {% if not c_user %}none{% endif %}">
+                    <img src="{{main_url}}{{c_user.picture}}" alt="">
+                    <p>{{c_user.full_name}}</p>
             </div>
 
             <div class="btns">
-                <a href="#" class="cyan">انشاء حساب</a>
-                <a href="#" class="green">تسجيل الدخول</a>
-                <a href="#" class="green">ابدأ بث مباشر </a>
-                <a href="#" class="red">تسجيل الخروج</a>
+                {% if c_user %}
+                    <a href="#" class="green">ابدأ بث مباشر </a>
+                    <a href="{% url 'logout' %}" class="red">تسجيل الخروج</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="cyan">انشاء حساب</a>
+                    <a href="{% url 'login' %}" class="green">تسجيل الدخول</a>
+                {% endif %}
             </div>
 
         </div>
@@ -34,26 +40,28 @@
         <div class="lives">
 
             <!-- loop in lives based here -->
-            <div class="live">
-                
-                <div class="info">
-                    <div class="u">
-                        <img src="images/radwan.jpeg" alt="">
-                        <p>Username</p>
+
+            {% for room in rooms %}
+                <div class="live">
+                    
+                    <div class="info">
+                        <div class="u">
+                            <img src="{{main_url}}{{room.created_by.picture}}" alt="">
+                            <p>{{room.created_by.full_name}}</p>
+                        </div>
+                        <p>{{room.created_at }}</p>
                     </div>
-                    <p>3 min ago</p>
+
+                    <div class="des">
+                        <p>{{room.title}}</p>
+                    </div>
+
+                    <div class="save-btn">
+                        <a href="{% url 'room' room.id %}">دخول</a>
+                    </div>
+
                 </div>
-
-                <div class="des">
-                    <p>الوصف هنا</p>
-                </div>
-
-                <div class="save-btn">
-                    <a href="#">دخول</a>
-                </div>
-
-            </div>
-
+            {% endfor %}
 
 
 

@@ -1,7 +1,10 @@
-from django.http import HttpResponse
+from django.shortcuts import redirect
 
 
 def LogoutView (request) : 
-    return HttpResponse("LogoutView")
+
+    response = redirect('rooms')
+    response.delete_cookie('user')
+    return response
 
 

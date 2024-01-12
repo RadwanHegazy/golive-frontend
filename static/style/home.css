@@ -146,6 +146,8 @@ img.bg {
 
 .live .info > p {
     font-family: var(--var-font);
+    font-size: 11px;
+    font-weight: bold;
 }
 
 .info .u {
