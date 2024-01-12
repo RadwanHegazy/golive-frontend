@@ -1,32 +1,34 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>انشاء حساب</title>
-    <link rel="stylesheet" href="style/auth.css">
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}">
 </head>
 <body>
     
-    <img src="images/bg.png" alt="" class="bg">
+    <img src="{% static 'images/bg.png' %}" alt="" class="bg">
 
     
     <div class="container">
 
         <form action="" method="POST" enctype="multipart/form-data">
 
+            {% csrf_token %}
             <div class="img-cont">
-                <img src="images/user.png" alt="" id="ImgView">
+                <img src="{% static 'images/user.png' %}" alt="" id="ImgView">
                 <button type="button" id="ImgBtn">تغير</button>
             </div>
 
-            <input type="file" hidden id="ImgFile">
-            <input type="text" name="full_name" placeholder="الاسم بالكامل">
-            <input type="email" name="email" placeholder="البريد الالكتروني">
-            <input type="password" name="password" placeholder="كلمة المرور">
+            <input type="file" hidden id="ImgFile" name="picture">
+            <input type="text" autocomplete="nope" name="full_name" placeholder="الاسم بالكامل">
+            <input type="email" autocomplete="nope" name="email" placeholder="البريد الالكتروني">
+            <input type="password" autocomplete="new-password" name="password" placeholder="كلمة المرور">
 
             <div class="btns">
-                <a href="#">تسجيل الدخول ؟</a>
+                <a href="{% url 'login' %}">تسجيل الدخول ؟</a>
                 <button type="submit">تسجيل</button>
             </div>
 
@@ -36,6 +38,10 @@
 
     <script>
 
+        if ("{{error}}"){
+            alert("{{error}}")
+        }
+        
         var imgView = document.getElementById('ImgView');
         var imgFile = document.getElementById('ImgFile');
         var imgBtn = document.getElementById('ImgBtn');

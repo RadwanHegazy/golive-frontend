@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Room </title>
-    <link rel="stylesheet" href="style/room.css">
+    <title> {{room.title}} </title>
+    <link rel="stylesheet" href="{% static 'style/room.css' %}">
 </head>
 <body>
     
-    <img src="images/bg.png" alt="" class="bg">
+    <img src="{% static 'images/bg.png' %}" alt="" class="bg">
 
     
     <div class="container">
@@ -20,7 +21,7 @@
             <div class="btns">
                 <button id="start-live">تشغيل البث</button>
                 <button id="end-live">انهاء البث</button>
-                <button id="copy-live-url" data-url="url_here">نسخ رابط البث</button>
+                <button id="copy-live-url" data-url="{{room_url}}">نسخ رابط البث</button>
             </div>
             
         </div>
@@ -33,15 +34,17 @@
                 <div class="msg-box">
 
                     <!-- loop messages here -->
-                    <div class="box">
-                        <div class="msg" id="1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, debitis.</div>
-                    </div>
+                    {% for msg in room.messages %}
+                        <div class="box">
+                            <div class="msg" id="{{msg.id}}">{{msg.text}}</div>
+                        </div>  
+                    {% endfor %}
 
                 </div>
 
                 <div class="details">
                     <p>عدد الرسائل : </p>
-                    <p id="msg-counter">1</p>
+                    <p id="msg-counter">{{room.count_messages}}</p>
                 </div>
 
             </div>
