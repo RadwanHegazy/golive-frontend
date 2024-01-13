@@ -20,7 +20,7 @@
             <video src="" id="live"></video>
             <div class="btns">
                 <button id="start-live">تشغيل البث</button>
-                <a href="{% url 'delete_room' room.room_id %}" id="end-live">انهاء البث</a>
+                <a href="/" id="end-live">انهاء البث</a>
                 <button id="copy-live-url" data-url="{{room_url}}">نسخ رابط البث</button>
             </div>
             
@@ -53,7 +53,105 @@
         
 
     </div>
+    <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
 
+
+    <!-- for socket -->
+
+    <script>
+        const localVideo = document.getElementById('live')
+
+    
+        
+        let stream;
+        const peers = []
+        const peer = new Peer(makeid(10))
+        ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var user_token = document.cookie.split("=")[2];
+        const meetingSocket = new WebSocket(`${ws_scheme}://127.0.0.1:4444/ws/room/{{room.room_id}}/?token=${user_token}`)
+        
+        const setVideoStream = (video, _stream) => {
+            video.srcObject = _stream
+            video.onloadedmetadata = _ => {
+                video.play();
+            }
+        }
+    
+        const startMeeting = _ => {
+            if (meetingSocket.readyState === 1) {
+                meetingSocket.send(JSON.stringify({ function: 'newUser', "parameter": peer.id, id: window.userID }))
+                } else {
+                    meetingSocket.onopen = e => meetingSocket.send(JSON.stringify({ function: 'newUser', "parameter": peer.id, id: window.userID }))
+                }
+    
+            
+        }
+    
+        const newUser = e => {
+            call = peer.call(e.parameter, stream)
+            peers.push(call)
+            call.on('stream', remoteStream => {
+    
+                setVideoStream(localVideo, remoteStream)
+            })
+        }
+    
+        meetingSocket.onmessage = e => {
+            const data = JSON.parse(e.data)
+            if (data.function === "newUser" && data.parameter != peer.id) {
+                newUser(data)
+            }
+    
+            if ('message' in data){
+                var user_msg = data.message;
+                var msgsContainer = document.querySelector('.msg-box');
+                var msg_id = makeid(10);
+
+                var msg_cont = `<div class="box">
+                    <div class="msg" id="${msg_id}">${user_msg}</div>
+                </div>  `;
+
+                msgsContainer.innerHTML += msg_cont;
+                
+                var msg_counter = document.getElementById('msg-counter');
+                var msg_counter_int = parseInt(msg_counter.textContent);
+                msg_counter_int++
+                msg_counter.textContent = msg_counter_int;
+                window.location.href = "#" + msg_id;
+            }
+            
+        }
+    
+        peer.on('call', call => {
+            let renderedVideo = newVideoRenderer(call.peer)
+            peers.push(call)
+            call.answer(stream)
+            call.on('stream', remoteStream => {
+                setVideoStream(document.getElementById(`user-${call.peer}`), remoteStream)
+            })
+        })
+    
+        function makeid(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() *
+                    charactersLength));
+            }
+            return result;
+        }
+    
+        document.getElementById('start-live').addEventListener('click',function(){
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((localstream) => {
+                stream = localstream
+                setVideoStream(localVideo, stream)
+                startMeeting()
+        
+            })
+        })
+        
+    </script>
 
     <script>
         // code for copy url of live to clipboard
@@ -62,6 +160,7 @@
             navigator.clipboard.writeText(copy_btn.dataset.url)
             alert('تم النسخ بنجاح')
         })
+     
     </script>
 
 </body>

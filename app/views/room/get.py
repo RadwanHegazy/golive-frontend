@@ -39,7 +39,7 @@ def GetRoom (request, room_id) :
     room_url = f'http://127.0.0.1:8000/room/{room_id}/'
     context['room_url'] = room_url
     
-    if user['c_user'] : 
+    if 'c_user' in user : 
         return render(request,'room-admin.html',context)
 
     return render(request,'room-user.html',context)

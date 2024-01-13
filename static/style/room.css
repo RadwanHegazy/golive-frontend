@@ -52,6 +52,7 @@ img.bg {
     height: 450px;
     background-color: #0A71BF;
     border-radius: 12px;
+    object-fit: cover;
 }
 
 .left .btns {
@@ -184,4 +185,16 @@ img.bg {
     color: #fff;
     cursor: pointer;
     box-shadow: 0px 0px 30px #04E1E1;
+}
+
+#start-meeting {
+    width: 100px;
+    height: 45px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background-color: #26FF60;
+    border-radius: 6px;
+    font-family: var(--var-font);
+    cursor: pointer;
 }
